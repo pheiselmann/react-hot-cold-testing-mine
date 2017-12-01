@@ -4,19 +4,26 @@ import { shallow } from 'enzyme';
 import Game from './game';
 
 describe('<Game />', () => {
+  // smoke test
   it('Renders without crashing', () => {
     shallow(<Game />);
   });
-
+  // 
   it('Can starts a new game', () => {
     const wrapper = shallow(<Game />);
     // Mess up the state a bit to simulate an existing game
+    // Similar to "beforeAll" function in 'board.test.js' in 'react-trello-testing' 
     wrapper.setState({
       guesses: [1, 2, 3, 4],
       feedback: 'Awesome',
       correctAnswer: -1 // Negative so different to new game
     });
+    // seems to be analogous to 'wrapper.update()'
+    // or perhaps not, becasue no rerendering needed (?)
+    // sets state to initial value, so this again bypasses 'wrapper.update()'
+    // this would clear all the values created in the setState call above
     wrapper.instance().restartGame();
+    // All these values come from restartGame() effect on state props
     expect(wrapper.state('guesses')).toEqual([]);
     expect(wrapper.state('feedback')).toEqual('Make your guess!');
     expect(wrapper.state('correctAnswer')).toBeGreaterThanOrEqual(0);
@@ -29,6 +36,14 @@ describe('<Game />', () => {
     wrapper.setState({
       correctAnswer: 100
     });
+
+    // continues to eliminate 'wrapper.update()'
+    // perhaps only applies to state changes to "instance'
+    // also, no rerendering necessary
+
+    // makeGuess checks guess against correctAnswer and
+    // sets feedback to appropriate message and
+    // sets state for feedback and updated guess list array
 
     wrapper.instance().makeGuess(25);
     expect(wrapper.state('guesses')).toEqual([25]);
@@ -50,6 +65,9 @@ describe('<Game />', () => {
     expect(wrapper.state('guesses')).toEqual([25, 60, 80, 95, 100]);
     expect(wrapper.state('feedback')).toEqual('You got it!');
   });
+
+  // Test generation of messages for assistive tech 
+  // ex: screen readers for the blind
 
   it('Can generate aural updates', () => {
     const wrapper = shallow(<Game />);

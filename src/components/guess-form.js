@@ -2,6 +2,10 @@ import React from 'react';
 
 import './guess-form.css';
 
+// onMakeGuess was passed by Game as prop to GuessSection,
+// which then passed it as a prop to GuessForm, where is used to process
+// onSubmit value of guess
+
 export default class GuessForm extends React.Component {
   onSubmit(event) {
     event.preventDefault();
@@ -13,6 +17,8 @@ export default class GuessForm extends React.Component {
     this.input.value = '';
     this.input.focus();
   }
+
+ 
 
   render() {
     return (
