@@ -78,14 +78,14 @@ export default class Game extends React.Component {
   }
 
   render() {
-    const { feedback, guesses, auralStatus } = this.state;
+    const { feedback, guesses, auralStatus } = this.state; 
     const guessCount = guesses.length;
     
     // Below in GuessSection, onMakeGuess is passed as prop to GuessSection,
     // which then passes it as a prop to GuessForm, where is used to process
     // onSubmit value of guess
     // Also feedback is passed as a prop to GuessSection, which then passes 
-    // feedback as a prop to feedback, which displays it
+    // feedback as a prop to Feedback, which displays it
     // A similar process happens with guesses being passed to StatusSection as a prop,
     // and then to GuessList as a prop from StatusSection
     return (
